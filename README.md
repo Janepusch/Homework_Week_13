@@ -16,7 +16,7 @@ This document contains the following details:
 ### Description of the Topology
 This repository includes code defining the infrastructure below. 
 
-![](ELK_Diagram_Week_13.png)
+![](diagram.png)
 
 The main purpose of this network is to expose a load-balanced and monitored instance of DVWA, the "D*mn Vulnerable Web Application"
 
@@ -49,8 +49,8 @@ To use this playbook, one must log into the Jump Box, then issue: `ansible-playb
 ### Access Policies
 The machines on the internal network are _not_ exposed to the public Internet. 
 
-Only the **jump box** machine can accept connections from the Internet. Access to this machine is only allowed from the IP address `64.72.118.76`
-- **Note**: _Your answer will be different!_
+Only the **jump box** machine can accept connections from the Internet. Access to this machine is only allowed from the IP address `51.143.6.108`
+_
 
 Machines _within_ the network can only be accessed by **each other**. The DVWA 1 and DVWA 2 VMs send traffic to the ELK server.
 
@@ -58,24 +58,28 @@ A summary of the access policies in place can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
-| Jump Box | Yes                 | 64.72.118.76         |
-| ELK      | No                  | 10.0.0.1-254         |
-| DVWA 1   | No                  | 10.0.0.1-254         |
-| DVWA 2   | No                  | 10.0.0.1-254         |
+| Jump Box | Yes                 | 51.143.6.108        |
+| ELK      | No                  | 10.1.0.4/24         |
+| DVWA 1   | No                  | 10.0.0.0/24         |
+| DVWA 2   | No                  | 10.0.0.0/24         |
+| DVWA 3   | No                  | 10.0.0.0/24         |
 
 ### Elk Configuration
 
-Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
-- _TODO: What is the main advantage of automating configuration with Ansible?_
+Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because... It saves time and it avoids errors.
 
 The playbook implements the following tasks:
-- _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
-- ...
-- ...
+In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
+- Install ELK yml
+- Install docker.io
+- Install pip3
+-Install Docker python module
+- Increase virtual memory and Use more memory
+- Download and launch a docker elk container
+- Filebeat and Metricbeat configuration and set up
 
-The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-![TODO: Update the path with the name of your screenshot of docker ps output](Images/docker_ps_output.png)
+I am unable to show a screenshot of docker ps poutput because my lab environment is no longer available.  However, when I did the activity, the docker container name was 'nifty-banache' and the docker ps command successfully configured and built the ELK VM with my install_elk.yml file below.
 
 The playbook is duplicated below.
 
@@ -133,7 +137,7 @@ The playbook is duplicated below.
 ```
 
 ### Target Machines & Beats
-This ELK server is configured to monitor the DVWA 1 and DVWA 2 VMs, at `10.0.0.5` and `10.0.0.6`, respectively.
+This ELK server is configured to monitor the DVWA 1 and DVWA 2 and DVWA 3 VMs, at `10.0.0.5` and `10.0.0.6`, and '10.0.0.7'.
 
 We have installed the following Beats on these machines:
 - Filebeat
@@ -193,7 +197,7 @@ The easiest way to copy the playbooks is to use Git:
 $ cd /etc/ansible
 $ mkdir files
 # Clone Repository + IaC Files
-$ git clone https://github.com/yourusername/project-1.git
+$ git clone https://github.com/Janepusch/Homework_Week_13.git
 # Move Playbooks and hosts file Into `/etc/ansible`
 $ cp project-1/playbooks/* .
 $ cp project-1/files/* ./files
@@ -209,9 +213,10 @@ $ cat > hosts <<EOF
 [webservers]
 10.0.0.5
 10.0.0.6
+10.0.0.7
 
 [elk]
-10.0.0.8
+10.1.0.4
 EOF
 ```
 
@@ -226,4 +231,4 @@ After this, the commands below run the playbook:
 
 To verify success, wait five minutes to give ELK time to start up. 
 
-Then, run: `curl http://10.0.0.8:5601`. This is the address of Kibana. If the installation succeeded, this command should print HTML to the console.
+Then, run: `curl http://10.1.0.4:5601`. This is the address of Kibana. If the installation succeeded, this command should print HTML to the console.
